@@ -3,6 +3,7 @@ package com.example.libreria_universitaria.service;
 import com.example.libreria_universitaria.entity.Libro;
 import com.example.libreria_universitaria.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,5 +43,16 @@ public class LibroService {
     public Integer getNumeroLibriByAutore(String autore) {
         Integer numeroLibriByAutore = libroRepository.findByAutore(autore).size();
         return numeroLibriByAutore;
+    }
+
+    // Ritorna i primi tre libri più costosi:
+    /*public List<Libro> getThreeLibriByPrezzo(PageRequest pageRequest) {
+        Pageable pageable = PageRequest.of(0, 3);
+        return libroRepository.findAllByOrderByPrezzoDesc(pageable);
+    }*/
+
+    // Ritorna i primi tre libri più costosi:
+    public List<Libro> getThreeLibriByPrezzo(Pageable pageable) {
+        return libroRepository.findAllByOrderByPrezzoDesc(pageable);
     }
 }

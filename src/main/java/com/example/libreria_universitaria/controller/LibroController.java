@@ -3,6 +3,7 @@ package com.example.libreria_universitaria.controller;
 import com.example.libreria_universitaria.entity.Libro;
 import com.example.libreria_universitaria.service.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,5 +75,16 @@ public class LibroController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(numeroLibriByAutore);
+    }
+
+    // Ritorna i primi tre libri più costosi:
+    @GetMapping("/libri-più-costosi")
+    public ResponseEntity<List<Libro>> getPrimiTreLibriByPrezzo(@RequestParam int page, @RequestParam int length) {
+        List<Libro> listaLibri = libroService.getThreeLibriByPrezzo(PageRequest.of(page, length));
+
+        if (listaLibri.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listaLibri);
     }
 }
