@@ -11,4 +11,5 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     List<Libro> findByAutore(String autore);
     List<Libro> findByAnnoPubblicazioneGreaterThan(Integer anno);
     List<Libro> findByDisponibileAndGenere(Boolean disponibile, String genere);
+    List<Libro> findByPrezzoLessThan(Double prezzo);
 }

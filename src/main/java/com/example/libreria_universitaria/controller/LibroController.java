@@ -53,4 +53,15 @@ public class LibroController {
         }
         return ResponseEntity.ok(libriToFind);
     }
+
+    // Ritorna tutti i libri con prezzo inferiore ad un certo valore:
+    @GetMapping("/prezzo-inferiore")
+    public ResponseEntity<List<Libro>> getLibriByPrezzoLessThan(@RequestParam Double prezzo) {
+        List<Libro> libriToFind = libroService.getLibriByPrezzoLessThan(prezzo);
+
+        if (libriToFind.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(libriToFind);
+    }
 }

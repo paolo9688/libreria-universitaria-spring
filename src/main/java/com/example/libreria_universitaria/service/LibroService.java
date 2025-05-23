@@ -32,4 +32,9 @@ public class LibroService {
     public List<Libro> getLibriDisponibiliAndGenere(Boolean disponibile, String genere) {
         return libroRepository.findByDisponibileAndGenere(disponibile, genere);
     }
+
+    // Ritorna tutti i libri con prezzo inferiore ad un certo valore:
+    public List<Libro> getLibriByPrezzoLessThan(Double prezzo) {
+        return libroRepository.findByPrezzoLessThan(prezzo);
+    }
 }
