@@ -4,6 +4,7 @@ import com.example.libreria_universitaria.entity.Libro;
 import com.example.libreria_universitaria.service.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,9 +81,10 @@ public class LibroController {
     // Ritorna i primi tre libri più costosi:
     @GetMapping("/libri-più-costosi")
     public ResponseEntity<List<Libro>> getPrimiTreLibriByPrezzo(@RequestParam int page, @RequestParam int length) {
-        List<Libro> listaLibri = libroService.getThreeLibriByPrezzo(PageRequest.of(page, length));
+        Pageable pageable = PageRequest.of(page, length);
+        List<Libro> listaLibri = libroService.getThreeLibriByPrezzo(pageable);
 
-        if (listaLibri.isEmpty()) {
+        if (listaLibri.isEmpty() || page < 0 || length <= 0) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(listaLibri);

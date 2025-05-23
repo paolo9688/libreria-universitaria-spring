@@ -46,12 +46,6 @@ public class LibroService {
     }
 
     // Ritorna i primi tre libri più costosi:
-    /*public List<Libro> getThreeLibriByPrezzo(PageRequest pageRequest) {
-        Pageable pageable = PageRequest.of(0, 3);
-        return libroRepository.findAllByOrderByPrezzoDesc(pageable);
-    }*/
-
-    // Ritorna i primi tre libri più costosi:
     public List<Libro> getThreeLibriByPrezzo(Pageable pageable) {
         return libroRepository.findAllByOrderByPrezzoDesc(pageable);
     }
