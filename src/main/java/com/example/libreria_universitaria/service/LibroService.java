@@ -29,7 +29,7 @@ public class LibroService {
     }
 
     // Ritorna tutti i libri disponibili di un certo genere:
-    public List<Libro> getLibriDisponibiliAndGenere(String genere) {
-        return libroRepository.findByDisponibileAndGenere(genere);
+    public List<Libro> getLibriDisponibiliAndGenere(Boolean disponibile, String genere) {
+        return libroRepository.findByDisponibileAndGenere(disponibile, genere);
     }
 }

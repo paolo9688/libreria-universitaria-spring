@@ -45,8 +45,8 @@ public class LibroController {
 
     // Ritorna tutti i libri disponibili di un certo genere:
     @GetMapping("/genere/{genere}")
-    public ResponseEntity<List<Libro>> getLibriByDisponibile(@PathVariable String genere) {
-        List<Libro> libriToFind = libroService.getLibriDisponibiliAndGenere(genere);
+    public ResponseEntity<List<Libro>> getLibriByDisponibile(@PathVariable String genere, @RequestParam Boolean disponibile) {
+        List<Libro> libriToFind = libroService.getLibriDisponibiliAndGenere(disponibile, genere);
 
         if (libriToFind.isEmpty()) {
             return ResponseEntity.noContent().build();

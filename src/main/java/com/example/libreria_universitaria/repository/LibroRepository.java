@@ -10,5 +10,5 @@ import java.util.List;
 public interface LibroRepository extends JpaRepository<Libro, Long> {
     List<Libro> findByAutore(String autore);
     List<Libro> findByAnnoPubblicazioneGreaterThan(Integer anno);
-    List<Libro> findByDisponibileAndGenere(String genere);
+    List<Libro> findByDisponibileAndGenere(Boolean disponibile, String genere);
 }
