@@ -37,4 +37,10 @@ public class LibroService {
     public List<Libro> getLibriByPrezzoLessThan(Double prezzo) {
         return libroRepository.findByPrezzoLessThan(prezzo);
     }
+
+    // Ritorna il numero di libri per un determinato autore:
+    public Integer getNumeroLibriByAutore(String autore) {
+        Integer numeroLibriByAutore = libroRepository.findByAutore(autore).size();
+        return numeroLibriByAutore;
+    }
 }

@@ -64,4 +64,15 @@ public class LibroController {
         }
         return ResponseEntity.ok(libriToFind);
     }
+
+    // Ritorna il numero di libri per un determinato autore:
+    @GetMapping("/libri-per-autore")
+    public ResponseEntity<Integer> getNumeroLibriByAutore(@RequestParam String autore) {
+        Integer numeroLibriByAutore = libroService.getNumeroLibriByAutore(autore);
+
+        if (numeroLibriByAutore == 0) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(numeroLibriByAutore);
+    }
 }
