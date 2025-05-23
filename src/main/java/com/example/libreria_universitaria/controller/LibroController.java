@@ -89,4 +89,15 @@ public class LibroController {
         }
         return ResponseEntity.ok(listaLibri);
     }
+
+    // Ritorna tutti i libri il cui titolo contiene una parola chiave:
+    @GetMapping("/parola-chiave")
+    public ResponseEntity<List<Libro>> getLibriContainingParolaChiave(@RequestParam String parolaChiave) {
+        List<Libro> libriToFind = libroService.getLibriContainingParolaChiave(parolaChiave);
+
+        if (libriToFind.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(libriToFind);
+    }
 }

@@ -49,4 +49,9 @@ public class LibroService {
     public List<Libro> getThreeLibriByPrezzo(Pageable pageable) {
         return libroRepository.findAllByOrderByPrezzoDesc(pageable);
     }
+
+    // Ritorna tutti i libri il cui titolo contiene una parola chiave:
+    public List<Libro> getLibriContainingParolaChiave(String parolaChiave) {
+        return libroRepository.findByTitoloContaining(parolaChiave);
+    }
 }
