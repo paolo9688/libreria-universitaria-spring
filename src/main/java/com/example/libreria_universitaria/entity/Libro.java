@@ -19,7 +19,7 @@ public class Libro {
     private String autore;
 
     @NotNull
-    @Column(name = "anno-pubblicazione")
+    @Column(name = "anno_pubblicazione")
     private Integer annoPubblicazione;
 
     @NotNull

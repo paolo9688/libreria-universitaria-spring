@@ -71,5 +71,7 @@ public class LibroService {
     }
 
     // Ritorna tutti i libri pubblicati in un determinato anno con una Native Query:
-
+    public List<Libro> getLibriByAnnoPubblicazioneNative(Integer annoPubblicazione) {
+        return libroRepository.findByAnnoPubblicazioneNative(annoPubblicazione);
+    }
 }

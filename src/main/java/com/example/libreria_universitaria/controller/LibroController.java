@@ -143,4 +143,15 @@ public class LibroController {
         }
         return ResponseEntity.ok(listaLibri);
     }
+
+    // Ritorna tutti i libri pubblicati in un determinato anno con una Native Query:
+    @GetMapping("/anno-pubblicazione")
+    public ResponseEntity<List<Libro>> getLibriByAnnoPubblicazione(@RequestParam Integer annoPubblicazione) {
+        List<Libro> listaLibri = libroService.getLibriByAnnoPubblicazioneNative(annoPubblicazione);
+
+        if (listaLibri.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listaLibri);
+    }
 }

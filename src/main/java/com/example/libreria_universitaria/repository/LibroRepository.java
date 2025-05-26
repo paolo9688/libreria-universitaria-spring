@@ -20,7 +20,7 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     List<Libro> findByGenere(String genere, Pageable pageable);
     List<Libro> findByDisponibile(Boolean disponibile, Pageable pageable);
     List<Libro> findByPrezzoOrAnnoPubblicazione(Double prezzo, Integer annoPubblicazione, Pageable pageable);
-    //@NativeQuery(value = "SELECT * FROM LIBRO WHERE ANNOPUBBLICAZIONE = ?1", native)
-    List<Libro> findByAnnoPubblicazione(Integer annoPubblicazione);
+    @NativeQuery(value = "SELECT * FROM LIBRO WHERE ANNO_PUBBLICAZIONE = ?1")
+    List<Libro> findByAnnoPubblicazioneNative(Integer annoPubblicazione);
 
 }
