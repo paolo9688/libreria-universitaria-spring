@@ -100,4 +100,18 @@ public class LibroController {
         }
         return ResponseEntity.ok(libriToFind);
     }
+
+    // Ritorna i libri ordinati per genere e paginati:
+    @GetMapping("/genere")
+    public ResponseEntity<List<Libro>> getLibriByGenerePageable(@RequestParam String genere,
+                                                                @RequestParam int page,
+                                                                @RequestParam int length) {
+        Pageable pageable = PageRequest.of(page, length);
+        List<Libro> listaLibri = libroService.getLibriByGenerePageable(genere, pageable);
+
+        if (listaLibri.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listaLibri);
+    }
 }

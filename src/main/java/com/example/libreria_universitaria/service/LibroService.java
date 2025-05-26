@@ -54,4 +54,9 @@ public class LibroService {
     public List<Libro> getLibriContainingParolaChiave(String parolaChiave) {
         return libroRepository.findByTitoloContaining(parolaChiave);
     }
+
+    // Ritorna i libri ordinati per genere e paginati:
+    public List<Libro> getLibriByGenerePageable(String genere, Pageable pageable) {
+        return libroRepository.findByGenere(genere, pageable);
+    }
 }
