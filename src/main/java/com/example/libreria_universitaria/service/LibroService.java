@@ -41,7 +41,7 @@ public class LibroService {
 
     // Ritorna il numero di libri per un determinato autore:
     public Integer getNumeroLibriByAutore(String autore) {
-        Integer numeroLibriByAutore = libroRepository.findByAutore(autore).size();
+        Integer numeroLibriByAutore = libroRepository.countByAutore(autore);
         return numeroLibriByAutore;
     }
 
@@ -69,4 +69,7 @@ public class LibroService {
     public List<Libro> getLibriByPrezzoOrAnnoPubblicazionePageable(Double prezzo, Integer annoPubblicazione, Pageable pageable) {
         return libroRepository.findByPrezzoOrAnnoPubblicazione(prezzo, annoPubblicazione, pageable);
     }
+
+    // Ritorna tutti i libri pubblicati in un determinato anno con una Native Query:
+
 }
