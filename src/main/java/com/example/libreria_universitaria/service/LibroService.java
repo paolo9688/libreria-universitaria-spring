@@ -75,8 +75,8 @@ public class LibroService {
         return libroRepository.findByAnnoPubblicazioneNative(annoPubblicazione);
     }
 
-    // Ritorna il numero di libri per genere:
-    public Integer getNumeroLibriByGenere(String genere) {
+    // Ritorna il numero di libri per genere con una Native Query:
+    public Integer getNumeroLibriByGenereNative(String genere) {
         return libroRepository.countByGenereNative(genere);
     }
 }

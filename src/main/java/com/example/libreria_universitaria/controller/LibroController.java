@@ -155,10 +155,10 @@ public class LibroController {
         return ResponseEntity.ok(listaLibri);
     }
 
-    // Ritorna il numero di libri per genere:
+    // Ritorna il numero di libri per genere con una Native Query:
     @GetMapping("/numero-libri-per-genere")
     public ResponseEntity<Integer> getNumeroLibriByGenere(@RequestParam String genere) {
-        Integer numeroLibri = libroService.getNumeroLibriByGenere(genere);
+        Integer numeroLibri = libroService.getNumeroLibriByGenereNative(genere);
 
         if (numeroLibri == null) {
             return ResponseEntity.noContent().build();
