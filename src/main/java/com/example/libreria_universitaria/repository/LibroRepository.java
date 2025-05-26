@@ -16,4 +16,5 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     List<Libro> findAllByOrderByPrezzoDesc(Pageable pageable);
     List<Libro> findByTitoloContaining(String parolaChiave);
     List<Libro> findByGenere(String genere, Pageable pageable);
+    List<Libro> findByDisponibile(Boolean disponibile, Pageable pageable);
 }

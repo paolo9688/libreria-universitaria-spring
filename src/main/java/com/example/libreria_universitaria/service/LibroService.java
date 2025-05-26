@@ -59,4 +59,9 @@ public class LibroService {
     public List<Libro> getLibriByGenerePageable(String genere, Pageable pageable) {
         return libroRepository.findByGenere(genere, pageable);
     }
+
+    // Ritorna tutti i libri disponibili con la paginazione:
+    public List<Libro> getLibriByDisponibilePageable(Boolean disponibile, Pageable pageable) {
+        return libroRepository.findByDisponibile(disponibile, pageable);
+    }
 }

@@ -114,4 +114,18 @@ public class LibroController {
         }
         return ResponseEntity.ok(listaLibri);
     }
+
+    // Ritorna tutti i libri disponibili con la paginazione:
+    @GetMapping("/disponibile")
+    public ResponseEntity<List<Libro>> getLibriByDisponibilePageable(@RequestParam Boolean disponibile,
+                                                                     @RequestParam int page,
+                                                                     @RequestParam int length) {
+        Pageable pageable = PageRequest.of(page, length);
+        List<Libro> listaLibri = libroService.getLibriByDisponibilePageable(disponibile, pageable);
+
+        if (listaLibri.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listaLibri);
+    }
 }
