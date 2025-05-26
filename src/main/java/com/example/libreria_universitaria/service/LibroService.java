@@ -64,4 +64,9 @@ public class LibroService {
     public List<Libro> getLibriByDisponibilePageable(Boolean disponibile, Pageable pageable) {
         return libroRepository.findByDisponibile(disponibile, pageable);
     }
+
+    // Ritorna tutti i libri filtrati per prezzo oppure per anno e paginati:
+    public List<Libro> getLibriByPrezzoOrAnnoPubblicazionePageable(Double prezzo, Integer annoPubblicazione, Pageable pageable) {
+        return libroRepository.findByPrezzoOrAnnoPubblicazione(prezzo, annoPubblicazione, pageable);
+    }
 }
