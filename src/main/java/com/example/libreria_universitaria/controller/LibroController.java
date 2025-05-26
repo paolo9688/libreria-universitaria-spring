@@ -154,4 +154,15 @@ public class LibroController {
         }
         return ResponseEntity.ok(listaLibri);
     }
+
+    // Ritorna il numero di libri per genere:
+    @GetMapping("/numero-libri-per-genere")
+    public ResponseEntity<Integer> getNumeroLibriByGenere(@RequestParam String genere) {
+        Integer numeroLibri = libroService.getNumeroLibriByGenere(genere);
+
+        if (numeroLibri == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(numeroLibri);
+    }
 }
