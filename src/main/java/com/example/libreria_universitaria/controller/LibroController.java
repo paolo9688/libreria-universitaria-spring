@@ -165,4 +165,16 @@ public class LibroController {
         }
         return ResponseEntity.ok(numeroLibri);
     }
+
+    // Ritorna tutti i libri con prezzo compreso fra 5.0 e 15.0 con una Native Query:
+    @GetMapping("/prezzo-compreso")
+    public ResponseEntity<List<Libro>> getLibriByPrezzoBetween(@RequestParam Double prezzoMin,
+                                                               @RequestParam Double prezzoMax) {
+        List<Libro> listaLibri = libroService.getLibriByPrezzoBetween(prezzoMin, prezzoMax);
+
+        if (listaLibri.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(listaLibri);
+    }
 }

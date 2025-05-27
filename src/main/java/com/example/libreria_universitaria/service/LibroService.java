@@ -79,4 +79,9 @@ public class LibroService {
     public Integer getNumeroLibriByGenereNative(String genere) {
         return libroRepository.countByGenereNative(genere);
     }
+
+    // Ritorna tutti i libri con prezzo compreso fra 5.0 e 15.0 con una Native Query:
+    public List<Libro> getLibriByPrezzoBetween(Double prezzoMin, Double prezzoMax) {
+        return libroRepository.findByPrezzoBetweenNative(prezzoMin, prezzoMax);
+    }
 }

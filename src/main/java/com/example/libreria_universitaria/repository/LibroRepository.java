@@ -24,4 +24,6 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     List<Libro> findByAnnoPubblicazioneNative(Integer annoPubblicazione);
     @NativeQuery(value = "SELECT COUNT(*) AS NUMERO_LIBRI FROM LIBRO WHERE GENERE = ?1")
     Integer countByGenereNative(String genere);
+    @NativeQuery(value = "SELECT * FROM LIBRO WHERE PREZZO > ?1 AND PREZZO < ?2")
+    List<Libro> findByPrezzoBetweenNative(Double prezzoMin, Double prezzoMax);
 }
