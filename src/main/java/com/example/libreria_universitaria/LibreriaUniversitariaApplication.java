@@ -23,19 +23,19 @@ public class LibreriaUniversitariaApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		populateBiblioteca();
+		//populateBiblioteca();
 	}
 
 	private void populateBiblioteca() {
 		List<Libro> listaLibri = new ArrayList<>();
-		int libriMax = 20;
+		int libriMax = 500000;
 
 		for (int i = 0; i < libriMax; i++) {
 			Integer annoPubblicazione = 2000 + i;
 			Boolean disponibile = annoPubblicazione % 2 == 0;
 			Double prezzo = 1.0 + i;
 
-			Libro libro = new Libro(null, "titolo-" + i,"autore-" + i, annoPubblicazione, "genere-" + i, disponibile, prezzo);
+			Libro libro = new Libro(null, "titolo-" + i,"autore-" + i, annoPubblicazione, "genere", disponibile, prezzo);
 
 			listaLibri.add(libro);
 		}

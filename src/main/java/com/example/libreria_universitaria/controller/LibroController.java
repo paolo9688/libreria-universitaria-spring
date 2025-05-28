@@ -3,6 +3,7 @@ package com.example.libreria_universitaria.controller;
 import com.example.libreria_universitaria.entity.Libro;
 import com.example.libreria_universitaria.service.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -176,5 +177,20 @@ public class LibroController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(listaLibri);
+    }
+
+    // Ritorna tutti i libri disponibili di un certo genere con paginazione:
+    @GetMapping("/genere-pageable/{genere}")
+    public ResponseEntity<Page<Libro>> getLibriByDisponibilePageable(@PathVariable String genere,
+                                                                     @RequestParam boolean disponibile,
+                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int length) {
+
+        Page<Libro> libriToFind = libroService.getLibriDisponibiliAndGenerePageable(disponibile, genere, page, length);
+
+        if (libriToFind.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(libriToFind);
     }
 }

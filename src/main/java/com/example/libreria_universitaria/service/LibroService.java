@@ -3,7 +3,10 @@ package com.example.libreria_universitaria.service;
 import com.example.libreria_universitaria.entity.Libro;
 import com.example.libreria_universitaria.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -83,5 +86,11 @@ public class LibroService {
     // Ritorna tutti i libri con prezzo compreso fra 5.0 e 15.0 con una Native Query:
     public List<Libro> getLibriByPrezzoBetween(Double prezzoMin, Double prezzoMax) {
         return libroRepository.findByPrezzoBetweenNative(prezzoMin, prezzoMax);
+    }
+
+    // Ritorna tutti i libri disponibili di un certo genere con paginazione:
+    public Page<Libro> getLibriDisponibiliAndGenerePageable(boolean disponibile, String genere, int pagina, int dimensione) {
+        Pageable paginazione = PageRequest.of(pagina, dimensione);
+        return libroRepository.findByDisponibileAndGenere(disponibile, genere, paginazione);
     }
 }

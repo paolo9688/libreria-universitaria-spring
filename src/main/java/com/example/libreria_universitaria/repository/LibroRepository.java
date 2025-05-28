@@ -1,6 +1,7 @@
 package com.example.libreria_universitaria.repository;
 
 import com.example.libreria_universitaria.entity.Libro;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.NativeQuery;
@@ -26,4 +27,5 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     Integer countByGenereNative(String genere);
     @NativeQuery(value = "SELECT * FROM LIBRO WHERE PREZZO > ?1 AND PREZZO < ?2")
     List<Libro> findByPrezzoBetweenNative(Double prezzoMin, Double prezzoMax);
+    Page<Libro> findByDisponibileAndGenere(boolean disponibile, String genere, Pageable pageable);
 }
