@@ -132,12 +132,11 @@ public class LibroController {
 
     // Ritorna tutti i libri filtrati per prezzo oppure per anno e paginati:
     @GetMapping("/prezzo-anno")
-    public ResponseEntity<List<Libro>> getLibriByPrezzoOrAnnoPubblicazionePageable(@RequestParam(required = false) Double prezzo,
+    public ResponseEntity<Page<Libro>> getLibriByPrezzoOrAnnoPubblicazionePageable(@RequestParam(required = false) Double prezzo,
                                                                                    @RequestParam(required = false) Integer annoPubblicazione,
-                                                                                   @RequestParam int page,
-                                                                                   @RequestParam int length) {
-        Pageable pageable = PageRequest.of(page, length);
-        List<Libro> listaLibri = libroService.getLibriByPrezzoOrAnnoPubblicazionePageable(prezzo, annoPubblicazione, pageable);
+                                                                                   @RequestParam(defaultValue = "0") int page,
+                                                                                   @RequestParam(defaultValue = "10") int length) {
+        Page<Libro> listaLibri = libroService.getLibriByPrezzoOrAnnoPubblicazionePageable(prezzo, annoPubblicazione, page, length);
 
         if (listaLibri.isEmpty()) {
             return ResponseEntity.noContent().build();
