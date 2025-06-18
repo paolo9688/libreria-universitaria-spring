@@ -72,9 +72,9 @@ public class LibroController {
 
     // Ritorna i primi tre libri più costosi:
     @GetMapping("/libri-più-costosi")
-    public ResponseEntity<List<Libro>> getPrimiTreLibriByPrezzo(@RequestParam int page, @RequestParam int length) {
-        Pageable pageable = PageRequest.of(page, length);
-        List<Libro> listaLibri = libroService.getThreeLibriByPrezzo(pageable);
+    public ResponseEntity<Page<Libro>> getPrimiTreLibriByPrezzo(@RequestParam int page,
+                                                                @RequestParam int length) {
+        Page<Libro> listaLibri = libroService.getThreeLibriByPrezzo(page, length);
 
         return ResponseEntity.ok(listaLibri);
     }
@@ -89,22 +89,20 @@ public class LibroController {
 
     // Ritorna i libri ordinati per genere e paginati:
     @GetMapping("/genere")
-    public ResponseEntity<List<Libro>> getLibriByGenerePageable(@RequestParam String genere,
+    public ResponseEntity<Page<Libro>> getLibriByGenerePageable(@RequestParam String genere,
                                                                 @RequestParam int page,
                                                                 @RequestParam int length) {
-        Pageable pageable = PageRequest.of(page, length);
-        List<Libro> listaLibri = libroService.getLibriByGenerePageable(genere, pageable);
+        Page<Libro> listaLibri = libroService.getLibriByGenerePageable(genere, page, length);
 
         return ResponseEntity.ok(listaLibri);
     }
 
     // Ritorna tutti i libri disponibili con la paginazione:
     @GetMapping("/disponibile")
-    public ResponseEntity<List<Libro>> getLibriByDisponibilePageable(@RequestParam Boolean disponibile,
-                                                                     @RequestParam int page,
-                                                                     @RequestParam int length) {
-        Pageable pageable = PageRequest.of(page, length);
-        List<Libro> listaLibri = libroService.getLibriByDisponibilePageable(disponibile, pageable);
+    public ResponseEntity<Page<Libro>> getLibriByDisponibilePageable(@RequestParam Boolean disponibile,
+                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int length) {
+        Page<Libro> listaLibri = libroService.getLibriByDisponibilePageable(disponibile, page, length);
 
         return ResponseEntity.ok(listaLibri);
     }
