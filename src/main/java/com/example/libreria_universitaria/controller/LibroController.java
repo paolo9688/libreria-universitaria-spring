@@ -21,6 +21,7 @@ public class LibroController {
     @PostMapping("/create-libro")
     public ResponseEntity<Libro> createLibro(@RequestBody Libro libro) {
         Libro heroToAdd = libroService.addLibro(libro);
+
         return ResponseEntity.ok(heroToAdd);
     }
 
@@ -29,9 +30,11 @@ public class LibroController {
     public ResponseEntity<List<Libro>> getLibriByAutore(@PathVariable String autore) {
         List<Libro> libriToFind = libroService.getLibriByAutore(autore);
 
-        if (libriToFind.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        /* N.B. : in questi casi, quando devo ritornare una lista di oggetti,
+        *         non è necessario mettere ResponseEntity.noContent().build(),
+        *         in quanto se la mia lista di ritorno è vuota non devo lanciare un errore lato server.
+        *         Come ritorno avrò sempre ResponseEntity.ok(listaOggetti) ed avrò una lista vuota.*/
+
         return ResponseEntity.ok(libriToFind);
     }
 
@@ -40,9 +43,6 @@ public class LibroController {
     public ResponseEntity<List<Libro>> getLibriByAnnoGreaterThan(@PathVariable Integer anno) {
         List<Libro> libriToFind = libroService.getLibriByAnnoGreaterThan(anno);
 
-        if (libriToFind.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(libriToFind);
     }
 
@@ -51,9 +51,6 @@ public class LibroController {
     public ResponseEntity<List<Libro>> getLibriByDisponibile(@PathVariable String genere, @RequestParam Boolean disponibile) {
         List<Libro> libriToFind = libroService.getLibriDisponibiliAndGenere(disponibile, genere);
 
-        if (libriToFind.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(libriToFind);
     }
 
@@ -62,9 +59,6 @@ public class LibroController {
     public ResponseEntity<List<Libro>> getLibriByPrezzoLessThan(@RequestParam Double prezzo) {
         List<Libro> libriToFind = libroService.getLibriByPrezzoLessThan(prezzo);
 
-        if (libriToFind.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(libriToFind);
     }
 
@@ -73,9 +67,6 @@ public class LibroController {
     public ResponseEntity<Integer> getNumeroLibriByAutore(@RequestParam String autore) {
         Integer numeroLibriByAutore = libroService.getNumeroLibriByAutore(autore);
 
-        if (numeroLibriByAutore == 0) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(numeroLibriByAutore);
     }
 
@@ -85,9 +76,6 @@ public class LibroController {
         Pageable pageable = PageRequest.of(page, length);
         List<Libro> listaLibri = libroService.getThreeLibriByPrezzo(pageable);
 
-        if (listaLibri.isEmpty() || page < 0 || length <= 0) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(listaLibri);
     }
 
@@ -96,9 +84,6 @@ public class LibroController {
     public ResponseEntity<List<Libro>> getLibriContainingParolaChiave(@RequestParam String parolaChiave) {
         List<Libro> libriToFind = libroService.getLibriContainingParolaChiave(parolaChiave);
 
-        if (libriToFind.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(libriToFind);
     }
 
@@ -110,9 +95,6 @@ public class LibroController {
         Pageable pageable = PageRequest.of(page, length);
         List<Libro> listaLibri = libroService.getLibriByGenerePageable(genere, pageable);
 
-        if (listaLibri.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(listaLibri);
     }
 
@@ -124,9 +106,6 @@ public class LibroController {
         Pageable pageable = PageRequest.of(page, length);
         List<Libro> listaLibri = libroService.getLibriByDisponibilePageable(disponibile, pageable);
 
-        if (listaLibri.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(listaLibri);
     }
 
@@ -138,9 +117,6 @@ public class LibroController {
                                                                                    @RequestParam(defaultValue = "10") int length) {
         Page<Libro> listaLibri = libroService.getLibriByPrezzoOrAnnoPubblicazionePageable(prezzo, annoPubblicazione, page, length);
 
-        if (listaLibri.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(listaLibri);
     }
 
@@ -149,9 +125,6 @@ public class LibroController {
     public ResponseEntity<List<Libro>> getLibriByAnnoPubblicazione(@RequestParam Integer annoPubblicazione) {
         List<Libro> listaLibri = libroService.getLibriByAnnoPubblicazioneNative(annoPubblicazione);
 
-        if (listaLibri.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(listaLibri);
     }
 
@@ -160,9 +133,6 @@ public class LibroController {
     public ResponseEntity<Integer> getNumeroLibriByGenere(@RequestParam String genere) {
         Integer numeroLibri = libroService.getNumeroLibriByGenereNative(genere);
 
-        if (numeroLibri == null) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(numeroLibri);
     }
 
@@ -172,9 +142,6 @@ public class LibroController {
                                                                @RequestParam Double prezzoMax) {
         List<Libro> listaLibri = libroService.getLibriByPrezzoBetween(prezzoMin, prezzoMax);
 
-        if (listaLibri.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(listaLibri);
     }
 
@@ -187,9 +154,6 @@ public class LibroController {
 
         Page<Libro> libriToFind = libroService.getLibriDisponibiliAndGenerePageable(disponibile, genere, page, length);
 
-        if (libriToFind.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(libriToFind);
     }
 }

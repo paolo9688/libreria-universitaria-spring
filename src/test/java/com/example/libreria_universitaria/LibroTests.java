@@ -48,10 +48,6 @@ class LibroTests {
 	@BeforeEach
 	public void setUp() throws Exception {
 		libro = new Libro(1L, "Il signore degli anelli", "Tolkien", 1954, "Fantasy", true, 52.25);
-
-		/*mockMvc.perform(post("/api/libri")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(libro)));*/
 	}
 
 	@Test
@@ -79,6 +75,18 @@ class LibroTests {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().string("1"))
+				.andDo(print());
+	}
+
+	@Test
+	public void findByAnnoPubblicazioneGreaterThanTest() throws Exception {
+		Integer annoLimite = 1900;
+		when(libroService.getLibriByAnnoGreaterThan(annoLimite)).thenReturn(List.of(libro));
+
+		mockMvc.perform(get("/api/libri/anno/" + annoLimite)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].annoPubblicazione").value(libro.getAnnoPubblicazione()))
 				.andDo(print());
 	}
 }

@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public interface LibroRepository extends JpaRepository<Libro, Long> {
-    List<Libro> findByAutore(String autore);
     Integer countByAutore(String autore);
+    List<Libro> findByAutore(String autore);
     List<Libro> findByAnnoPubblicazioneGreaterThan(Integer anno);
     List<Libro> findByDisponibileAndGenere(Boolean disponibile, String genere);
     List<Libro> findByPrezzoLessThan(Double prezzo);
@@ -20,6 +20,7 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     List<Libro> findByTitoloContaining(String parolaChiave);
     List<Libro> findByGenere(String genere, Pageable pageable);
     List<Libro> findByDisponibile(Boolean disponibile, Pageable pageable);
+    Page<Libro> findByDisponibileAndGenere(boolean disponibile, String genere, Pageable pageable);
     Page<Libro> findByPrezzoOrAnnoPubblicazione(Double prezzo, Integer annoPubblicazione, Pageable pageable);
     @NativeQuery(value = "SELECT * FROM LIBRO WHERE ANNO_PUBBLICAZIONE = ?1")
     List<Libro> findByAnnoPubblicazioneNative(Integer annoPubblicazione);
@@ -27,5 +28,4 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     Integer countByGenereNative(String genere);
     @NativeQuery(value = "SELECT * FROM LIBRO WHERE PREZZO > ?1 AND PREZZO < ?2")
     List<Libro> findByPrezzoBetweenNative(Double prezzoMin, Double prezzoMax);
-    Page<Libro> findByDisponibileAndGenere(boolean disponibile, String genere, Pageable pageable);
 }
