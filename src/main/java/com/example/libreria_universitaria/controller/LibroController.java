@@ -4,8 +4,6 @@ import com.example.libreria_universitaria.entity.Libro;
 import com.example.libreria_universitaria.service.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -138,7 +136,7 @@ public class LibroController {
     @GetMapping("/prezzo-compreso")
     public ResponseEntity<List<Libro>> getLibriByPrezzoBetween(@RequestParam Double prezzoMin,
                                                                @RequestParam Double prezzoMax) {
-        List<Libro> listaLibri = libroService.getLibriByPrezzoBetween(prezzoMin, prezzoMax);
+        List<Libro> listaLibri = libroService.getLibriByPrezzoBetweenNative(prezzoMin, prezzoMax);
 
         return ResponseEntity.ok(listaLibri);
     }

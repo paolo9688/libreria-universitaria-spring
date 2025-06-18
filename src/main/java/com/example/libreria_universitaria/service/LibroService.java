@@ -111,8 +111,8 @@ public class LibroService {
         return numeroLibri;
     }
 
-    // Ritorna tutti i libri con prezzo compreso fra 5.0 e 15.0 con una Native Query:
-    public List<Libro> getLibriByPrezzoBetween(Double prezzoMin, Double prezzoMax) {
+    // Ritorna tutti i libri con prezzo compreso fra prezzoMin e prezzoMax con una Native Query:
+    public List<Libro> getLibriByPrezzoBetweenNative(Double prezzoMin, Double prezzoMax) {
         List<Libro> libriToFind = libroRepository.findByPrezzoBetweenNative(prezzoMin, prezzoMax);
 
         return libriToFind;
