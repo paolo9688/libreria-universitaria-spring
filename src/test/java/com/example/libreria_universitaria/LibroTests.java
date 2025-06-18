@@ -69,4 +69,16 @@ class LibroTests {
 				.andExpect(jsonPath("$[0].autore").value(libro.getAutore()))
 				.andDo(print());
 	}
+
+	@Test
+	public void countByAutoreTest() throws Exception {
+		when(libroService.getNumeroLibriByAutore(libro.getAutore())).thenReturn(List.of(libro).size());
+
+		mockMvc.perform(get("/api/libri/libri-per-autore")
+				.param("autore", libro.getAutore())
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().string("1"))
+				.andDo(print());
+	}
 }
