@@ -16,12 +16,14 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     List<Libro> findByAnnoPubblicazioneGreaterThan(Integer anno);
     List<Libro> findByDisponibileAndGenere(Boolean disponibile, String genere);
     List<Libro> findByPrezzoLessThan(Double prezzo);
-    List<Libro> findAllByOrderByPrezzoDesc(Pageable pageable);
     List<Libro> findByTitoloContaining(String parolaChiave);
-    List<Libro> findByGenere(String genere, Pageable pageable);
-    List<Libro> findByDisponibile(Boolean disponibile, Pageable pageable);
+
+    Page<Libro> findAllByOrderByPrezzoDesc(Pageable pageable);
+    Page<Libro> findByGenere(String genere, Pageable pageable);
+    Page<Libro> findByDisponibile(Boolean disponibile, Pageable pageable);
     Page<Libro> findByDisponibileAndGenere(boolean disponibile, String genere, Pageable pageable);
     Page<Libro> findByPrezzoOrAnnoPubblicazione(Double prezzo, Integer annoPubblicazione, Pageable pageable);
+
     @NativeQuery(value = "SELECT * FROM LIBRO WHERE ANNO_PUBBLICAZIONE = ?1")
     List<Libro> findByAnnoPubblicazioneNative(Integer annoPubblicazione);
     @NativeQuery(value = "SELECT COUNT(*) AS NUMERO_LIBRI FROM LIBRO WHERE GENERE = ?1")
