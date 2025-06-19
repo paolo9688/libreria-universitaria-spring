@@ -70,8 +70,8 @@ public class LibroController {
 
     // Ritorna i primi tre libri più costosi:
     @GetMapping("/libri-più-costosi")
-    public ResponseEntity<Page<Libro>> getPrimiTreLibriByPrezzo(@RequestParam int page,
-                                                                @RequestParam int length) {
+    public ResponseEntity<Page<Libro>> getPrimiTreLibriByPrezzo(@RequestParam(name = "pagina") int page,
+                                                                @RequestParam(name = "dimensione") int length) {
         Page<Libro> listaLibri = libroService.getThreeLibriByPrezzo(page, length);
 
         return ResponseEntity.ok(listaLibri);

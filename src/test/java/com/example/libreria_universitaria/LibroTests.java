@@ -9,9 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -128,6 +133,59 @@ class LibroTests {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].titolo").value(libro.getTitolo()))
+				.andDo(print());
+	}
+
+	/*
+	@Test
+	void testGetPaginato() throws Exception {
+		mockMvc.perform(get("/prodotti?page=0&size=10"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content", hasSize(10)))
+				.andExpect(jsonPath("$.totalElements").value(25))
+				.andExpect(jsonPath("$.totalPages").value(3));
+	}
+	*/
+
+	@Test
+	public void getThreeLibriByPrezzoTest() throws Exception {
+		int pagina = 0;
+		int dimensione = 10;
+
+		// 1. Crea una lista di libri per la pagina
+		List<Libro> libriPerPagina = new ArrayList<>();
+		for (int i = 0; i < dimensione; i++) {
+			Libro libro = new Libro();
+			libro.setId((long) (i + 1));
+			libro.setTitolo("Libro " + (i + 1));
+			libro.setPrezzo(10.0 + i); // Prezzi crescenti per simulare i più costosi
+			libriPerPagina.add(libro);
+		}
+
+		// 2. Definisci il Pageable che il tuo servizio si aspetterà
+		// Spring automaticamente crea un Pageable dalla richiesta /libri-più-costosi?pagina=0&dimensione=10
+		Pageable pageable = PageRequest.of(pagina, dimensione);
+
+		// 3. Crea un mock di Page usando PageImpl
+		// totalElements e totalPages sono importanti per le tue asserzioni jsonPath
+		long totalElements = 25; // Esempio: hai 25 libri totali
+		int totalPages = (int) Math.ceil((double) totalElements / dimensione); // Calcola il numero totale di pagine
+
+		Page<Libro> mockPage = new PageImpl<>(libriPerPagina, pageable, totalElements);
+
+		// 4. Mokka il comportamento del servizio
+		// Nota: il metodo del servizio probabilmente prende un Pageable, non int, int
+		// Se il tuo servizio prende int, int, assicurati che internamente crei un Pageable.
+		// L'esempio seguente assume che il servizio prenda un Pageable.
+		when(libroService.getThreeLibriByPrezzo(pagina, dimensione)).thenReturn(mockPage);
+
+		mockMvc.perform(get("/api/libri/libri-più-costosi") // Ho rimosso i parametri dalla stringa URL
+						.param("pagina", String.valueOf(pagina))     // e li ho aggiunti con .param()
+						.param("dimensione", String.valueOf(dimensione)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content", hasSize(dimensione))) // Verifica la dimensione della pagina
+				.andExpect(jsonPath("$.totalElements").value(totalElements)) // Verifica il numero totale di elementi
+				.andExpect(jsonPath("$.totalPages").value(totalPages))       // Verifica il numero totale di pagine
 				.andDo(print());
 	}
 }
