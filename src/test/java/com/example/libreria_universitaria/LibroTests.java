@@ -107,8 +107,14 @@ class LibroTests {
 
 	@Test
 	public void findByPrezzoLessThanTest() throws Exception {
-		Double prezzoRiferimento = 59.99;
+		Double prezzo = 59.99;
+		when(libroService.getLibriByPrezzoLessThan(prezzo)).thenReturn(List.of(libro));
 
-
+		mockMvc.perform(get("/api/libri/prezzo-inferiore")
+				.param("prezzo", String.valueOf(prezzo))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].prezzo").value(libro.getPrezzo()))
+				.andDo(print());
 	}
 }
