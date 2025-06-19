@@ -88,8 +88,8 @@ public class LibroController {
     // Ritorna i libri ordinati per genere e paginati:
     @GetMapping("/genere")
     public ResponseEntity<Page<Libro>> getLibriByGenerePageable(@RequestParam String genere,
-                                                                @RequestParam int page,
-                                                                @RequestParam int length) {
+                                                                @RequestParam(name = "pagina") int page,
+                                                                @RequestParam(name = "dimensione") int length) {
         Page<Libro> listaLibri = libroService.getLibriByGenerePageable(genere, page, length);
 
         return ResponseEntity.ok(listaLibri);

@@ -180,12 +180,45 @@ class LibroTests {
 		when(libroService.getThreeLibriByPrezzo(pagina, dimensione)).thenReturn(mockPage);
 
 		mockMvc.perform(get("/api/libri/libri-più-costosi") // Ho rimosso i parametri dalla stringa URL
-						.param("pagina", String.valueOf(pagina))     // e li ho aggiunti con .param()
-						.param("dimensione", String.valueOf(dimensione)))
+				.param("pagina", String.valueOf(pagina))     // e li ho aggiunti con .param()
+				.param("dimensione", String.valueOf(dimensione)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.content", hasSize(dimensione))) // Verifica la dimensione della pagina
 				.andExpect(jsonPath("$.totalElements").value(totalElements)) // Verifica il numero totale di elementi
 				.andExpect(jsonPath("$.totalPages").value(totalPages))       // Verifica il numero totale di pagine
+				.andDo(print());
+	}
+
+	@Test
+	public void findByGenereTest() throws Exception {
+		String genere = "Fantasy";
+		int pagina = 0;
+		int dimensione = 10;
+
+		List<Libro> libriPerPagina = new ArrayList<>();
+		for (int i = 0; i < dimensione; i++) {
+			Libro libro = new Libro();
+			libro.setId((long) (i + 1));
+			libro.setTitolo("Libro " + (i + 1));
+			libro.setPrezzo(10.0 + i);
+			libro.setGenere(genere);
+			libriPerPagina.add(libro);
+		}
+
+		long totalElements = 25;
+
+		Page<Libro> mockPage = new PageImpl<>(libriPerPagina, PageRequest.of(pagina, dimensione), totalElements);
+
+		when(libroService.getLibriByGenerePageable(genere, pagina, dimensione)).thenReturn(mockPage);
+
+		mockMvc.perform(get("/api/libri/genere")
+				.param("genere", genere)
+				.param("pagina", String.valueOf(pagina))
+				.param("dimensione", String.valueOf(dimensione)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content", hasSize(dimensione)))
+				.andExpect(jsonPath("$.totalElements").value(totalElements))
+				.andExpect(jsonPath("$.totalPages").value((int) Math.ceil((double) totalElements / dimensione)))
 				.andDo(print());
 	}
 }
