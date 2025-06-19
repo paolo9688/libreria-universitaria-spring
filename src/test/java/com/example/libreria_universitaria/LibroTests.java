@@ -117,4 +117,17 @@ class LibroTests {
 				.andExpect(jsonPath("$[0].prezzo").value(libro.getPrezzo()))
 				.andDo(print());
 	}
+
+	@Test
+	public void findByTitoloContainingTest() throws Exception {
+		String parolaChiave = "signore";
+		when(libroService.getLibriContainingParolaChiave(parolaChiave)).thenReturn(List.of(libro));
+
+		mockMvc.perform(get("/api/libri/parola-chiave")
+				.param("parolaChiave", parolaChiave)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].titolo").value(libro.getTitolo()))
+				.andDo(print());
+	}
 }
