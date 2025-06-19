@@ -89,4 +89,26 @@ class LibroTests {
 				.andExpect(jsonPath("$[0].annoPubblicazione").value(libro.getAnnoPubblicazione()))
 				.andDo(print());
 	}
+
+	@Test
+	public void findByDisponibileAndGenereTest() throws Exception {
+		boolean disponibile = true;
+		String genere = "Fantasy";
+		when(libroService.getLibriDisponibiliAndGenere(disponibile, genere)).thenReturn(List.of(libro));
+
+		mockMvc.perform(get("/api/libri/genere/" + genere)
+				.param("disponibile", String.valueOf(disponibile))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].disponibile").value(libro.getDisponibile()))
+				.andExpect(jsonPath("$[0].genere").value(libro.getGenere()))
+				.andDo(print());
+	}
+
+	@Test
+	public void findByPrezzoLessThanTest() throws Exception {
+		Double prezzoRiferimento = 59.99;
+
+
+	}
 }

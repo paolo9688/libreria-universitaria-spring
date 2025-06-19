@@ -18,9 +18,9 @@ public class LibroController {
 
     @PostMapping("/create-libro")
     public ResponseEntity<Libro> createLibro(@RequestBody Libro libro) {
-        Libro heroToAdd = libroService.addLibro(libro);
+        Libro libroToAdd = libroService.addLibro(libro);
 
-        return ResponseEntity.ok(heroToAdd);
+        return ResponseEntity.ok(libroToAdd);
     }
 
     // Ritorna tutti i libri di uno specifico autore:
@@ -147,7 +147,6 @@ public class LibroController {
                                                                      @RequestParam boolean disponibile,
                                                                      @RequestParam(defaultValue = "0") int page,
                                                                      @RequestParam(defaultValue = "10") int length) {
-
         Page<Libro> libriToFind = libroService.getLibriDisponibiliAndGenerePageable(disponibile, genere, page, length);
 
         return ResponseEntity.ok(libriToFind);
