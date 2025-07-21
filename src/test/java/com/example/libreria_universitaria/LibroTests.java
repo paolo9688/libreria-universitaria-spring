@@ -221,4 +221,37 @@ class LibroTests {
 				.andExpect(jsonPath("$.totalPages").value((int) Math.ceil((double) totalElements / dimensione)))
 				.andDo(print());
 	}
+
+	@Test
+	public void findByDisponibilePageableTest() throws Exception {
+		boolean disponibile = true;
+		int pagina = 0;
+		int dimensione = 10;
+
+		List<Libro> libriPerPagina = new ArrayList<>();
+		for (int i = 0; i < dimensione; i++) {
+			Libro libro = new Libro();
+			libro.setId((long) (i + 1));
+			libro.setTitolo("Libro " + (i + 1));
+			libro.setPrezzo(10.0 + i);
+			libro.setDisponibile(disponibile);
+			libriPerPagina.add(libro);
+		}
+
+		long totalElements = 25;
+
+		Page<Libro> mockPage = new PageImpl<>(libriPerPagina, PageRequest.of(pagina, dimensione), totalElements);
+
+		when(libroService.getLibriByDisponibilePageable(disponibile, pagina, dimensione)).thenReturn(mockPage);
+
+		mockMvc.perform(get("/api/libri/genere")
+				.param("disponibile", String.valueOf(disponibile))
+				.param("pagina", String.valueOf(pagina))
+				.param("dimensione", String.valueOf(dimensione)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content", hasSize(dimensione)))
+				.andExpect(jsonPath("$.totalElements").value(totalElements))
+				.andExpect(jsonPath("$.totalPages").value((int) Math.ceil((double) totalElements / dimensione)))
+				.andDo(print());
+	}
 }

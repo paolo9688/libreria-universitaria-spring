@@ -98,8 +98,8 @@ public class LibroController {
     // Ritorna tutti i libri disponibili con la paginazione:
     @GetMapping("/disponibile")
     public ResponseEntity<Page<Libro>> getLibriByDisponibilePageable(@RequestParam Boolean disponibile,
-                                                                     @RequestParam(defaultValue = "0") int page,
-                                                                     @RequestParam(defaultValue = "10") int length) {
+                                                                     @RequestParam(defaultValue = "0", name = "pagina") int page,
+                                                                     @RequestParam(defaultValue = "10", name = "dimensione") int length) {
         Page<Libro> listaLibri = libroService.getLibriByDisponibilePageable(disponibile, page, length);
 
         return ResponseEntity.ok(listaLibri);
