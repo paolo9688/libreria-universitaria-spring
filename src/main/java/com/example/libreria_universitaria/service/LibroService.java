@@ -24,6 +24,13 @@ public class LibroService {
         return nuovoLibro;
     }
 
+    // Ritorna tutti i libri:
+    public List<Libro> findLibri() {
+        List<Libro> libri = libroRepository.findAll();
+
+        return libri;
+    }
+
     // Cancella un libro:
     public Optional<Libro> deleteLibro(Long id) {
         Optional<Libro> libroToFind = libroRepository.findById(id);

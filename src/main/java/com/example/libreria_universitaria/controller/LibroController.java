@@ -25,6 +25,14 @@ public class LibroController {
         return ResponseEntity.ok(libroToAdd);
     }
 
+    // Ritorna tutti i libri:
+    @GetMapping("/find-all-libri")
+    public ResponseEntity<List<Libro>> findLibri() {
+        List<Libro> libriToFind = libroService.findLibri();
+
+        return ResponseEntity.ok(libriToFind);
+    }
+
     // Cancella un libro:
     @DeleteMapping("/delete-libro/{id}")
     public ResponseEntity<String> deleteLibro(@PathVariable Long id) {
