@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LibroService {
@@ -21,6 +22,17 @@ public class LibroService {
         Libro nuovoLibro = libroRepository.save(libro);
 
         return nuovoLibro;
+    }
+
+    // Cancella un libro:
+    public Optional<Libro> deleteLibro(Long id) {
+        Optional<Libro> libroToFind = libroRepository.findById(id);
+
+        if(libroToFind.isPresent()) {
+            libroRepository.deleteById(id);
+            return libroToFind;
+        }
+        return Optional.empty();
     }
 
     // Ritorna tutti i libri di uno specifico autore:

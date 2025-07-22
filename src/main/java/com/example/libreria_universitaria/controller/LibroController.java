@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/libri")
@@ -16,11 +17,23 @@ public class LibroController {
     @Autowired
     private LibroService libroService;
 
+    // Crea un nuovo libro:
     @PostMapping("/create-libro")
     public ResponseEntity<Libro> createLibro(@RequestBody Libro libro) {
         Libro libroToAdd = libroService.addLibro(libro);
 
         return ResponseEntity.ok(libroToAdd);
+    }
+
+    // Cancella un libro:
+    @DeleteMapping("/delete-libro/{id}")
+    public ResponseEntity<String> deleteLibro(@PathVariable Long id) {
+        Optional<Libro> libroToDelete = libroService.deleteLibro(id);
+
+        if (libroToDelete.isPresent()) {
+            return ResponseEntity.ok("Libro con ID " + id + " cancellato con successo.");
+        }
+        return ResponseEntity.notFound().build();
     }
 
     // Ritorna tutti i libri di uno specifico autore:
