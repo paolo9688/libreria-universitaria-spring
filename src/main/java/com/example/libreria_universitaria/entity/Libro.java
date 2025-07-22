@@ -3,6 +3,8 @@ package com.example.libreria_universitaria.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Objects;
+
 @Entity
 public class Libro {
 
@@ -99,6 +101,18 @@ public class Libro {
 
     public void setPrezzo(Double prezzo) {
         this.prezzo = prezzo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Libro libro = (Libro) o;
+        return Objects.equals(id, libro.id) && Objects.equals(titolo, libro.titolo) && Objects.equals(autore, libro.autore) && Objects.equals(annoPubblicazione, libro.annoPubblicazione) && Objects.equals(genere, libro.genere) && Objects.equals(disponibile, libro.disponibile) && Objects.equals(prezzo, libro.prezzo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, titolo, autore, annoPubblicazione, genere, disponibile, prezzo);
     }
 
     @Override
