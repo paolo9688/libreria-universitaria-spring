@@ -52,7 +52,7 @@ class LibroTests {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		libro = new Libro(1L, "Il signore degli anelli", "Tolkien", 1954, "Fantasy", true, 52.25);
+		libro = new Libro("Il signore degli anelli", "Tolkien", 1954, "Fantasy", true, 52.25);
 	}
 
 	@Test

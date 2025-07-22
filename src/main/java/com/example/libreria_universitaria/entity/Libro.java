@@ -36,8 +36,7 @@ public class Libro {
 
     public Libro() {}
 
-    public Libro(Long id, String titolo, String autore, Integer annoPubblicazione, String genere, Boolean disponibile, Double prezzo) {
-        this.id = id;
+    public Libro(String titolo, String autore, Integer annoPubblicazione, String genere, Boolean disponibile, Double prezzo) {
         this.titolo = titolo;
         this.autore = autore;
         this.annoPubblicazione = annoPubblicazione;
