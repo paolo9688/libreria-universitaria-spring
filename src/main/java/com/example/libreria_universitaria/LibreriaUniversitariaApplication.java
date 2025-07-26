@@ -23,7 +23,7 @@ public class LibreriaUniversitariaApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		populateBiblioteca();
+		// populateBiblioteca();
 	}
 
 	private void populateBiblioteca() {
