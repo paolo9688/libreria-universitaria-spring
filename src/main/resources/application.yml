@@ -12,3 +12,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
+# Configurazione JWT
+jwt:
+  # La chiave segreta per firmare i token JWT.
+  # DEVE ESSERE LUNGA E COMPLESSA, generane una casuale e non condividerla.
+  # Esempio: your_super_secret_jwt_key_that_is_at_least_32_characters_long_and_randomly_generated
+  secret: 6qRr46999gU0tWWwgEgHg3ycUwduZZN4LstTooLiZ4Y=
+  # Tempo di scadenza del token in millisecondi (es. 86400000 ms = 24 ore)
+  expiration: 86400000
