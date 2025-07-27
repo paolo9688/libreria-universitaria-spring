@@ -28,6 +28,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        // Log iniziale per ogni richiesta che passa dal filtro
+        System.out.println("JWT Filter: Processing request for URI: " + request.getRequestURI());
+
         final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;
@@ -41,20 +44,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Se il nome utente è stato estratto e non c'è già un'autenticazione nel contesto di sicurezza
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            // Carica i dettagli dell'utente usando il nostro UserDetailsService
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-            // Valida il token
-            if (jwtUtil.validateToken(jwt, userDetails)) {
-                // Se il token è valido, crea un oggetto di autenticazione
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                // Imposta l'autenticazione nel contesto di sicurezza di Spring
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            System.out.println("JWT Filter: Attempting to load UserDetails for: " + username);
+            UserDetails userDetails = null;
+            try {
+                // Carica i dettagli dell'utente usando il nostro UserDetailsService
+                userDetails = this.userDetailsService.loadUserByUsername(username);
+                System.out.println("JWT Filter: UserDetails loaded successfully.");
+            } catch (Exception e) {
+                System.err.println("JWT Filter: Error loading UserDetails: " + e.getMessage());
             }
+
+            if (userDetails != null) {
+                System.out.println("JWT Filter: Attempting to validate token...");
+                // Valida il token
+                if (jwtUtil.validateToken(jwt, userDetails)) {
+                    System.out.println("JWT Filter: Token validated successfully. Setting SecurityContext.");
+                    // Se il token è valido, crea un oggetto di autenticazione
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    usernamePasswordAuthenticationToken
+                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    // Imposta l'autenticazione nel contesto di sicurezza di Spring
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                } else {
+                    System.out.println("JWT Filter: Token validation FAILED.");
+                }
+            }
+        } else {
+            System.out.println("JWT Filter: Username is null or SecurityContext already has authentication.");
         }
         // Continua la catena dei filtri
         filterChain.doFilter(request, response);

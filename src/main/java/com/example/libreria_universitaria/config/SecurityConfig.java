@@ -4,6 +4,7 @@ import com.example.libreria_universitaria.security.JwtAuthenticationFilter;
 import com.example.libreria_universitaria.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -15,6 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration; // Importa CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource; // Importa CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource; // Importa UrlBasedCorsConfigurationSource
+
+import java.util.Arrays; // Importa Arrays
+import java.util.List; // Importa List
 
 @Configuration
 @EnableWebSecurity // Abilita la sicurezza web di Spring
@@ -50,12 +57,36 @@ public class SecurityConfig {
         return authProvider;
     }
 
+    // Definisce la configurazione CORS
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        // Consenti l'origine del tuo frontend Vue/Vite
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        // Consenti i metodi HTTP necessari
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // Consenti tutti gli header
+        configuration.setAllowedHeaders(List.of("*"));
+        // Consenti l'invio di credenziali (es. Authorization header)
+        configuration.setAllowCredentials(true);
+        // Imposta il tempo massimo per il caching delle risposte preflight
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // Applica questa configurazione CORS a tutti i percorsi sotto /api/**
+        source.registerCorsConfiguration("/api/**", configuration);
+        return source;
+    }
+
     // Definisce la catena dei filtri di sicurezza HTTP
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // Disabilita CSRF (tipico per API REST stateless)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Abilita e configura CORS
                 .authorizeHttpRequests(auth -> auth
+                        // Permetti le richieste OPTIONS per tutti gli endpoint /api/** (per le richieste preflight CORS)
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                         // Permetti l'accesso a questi endpoint senza autenticazione
                         .requestMatchers("/api/utenti/register-utente", "/api/utenti/login-utente").permitAll()
                         // Tutte le altre richieste devono essere autenticate
